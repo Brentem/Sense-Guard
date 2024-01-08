@@ -15,16 +15,22 @@ void LedMatrixController::Initialize()
 {
     matrix.begin();
     matrix.setTextWrap(false);
-    matrix.setTextSize(2);
+    matrix.setTextSize(1);
 }
 
 void LedMatrixController::Refresh()
 {
-    char str[3] = "60";
+    matrix.setTextColor(matrix.Color333(7, 0, 0));
+    matrix.setCursor(2, 1);
+    matrix.print(60, 10);
+    matrix.setCursor(15, 1);
+    matrix.print('m');
+    matrix.setCursor(20, 1);
+    matrix.print('i');
+    matrix.setCursor(25, 1);
+    matrix.print('n');
 
-    matrix.setTextColor(matrix.Color333(0, 7, 0));
-    matrix.setCursor(5, 1);
-    matrix.print(str);
+    matrix.drawRect(2, 10, 28, 4, matrix.Color333(7, 0, 0));
 
     matrix.swapBuffers(false);
 }
