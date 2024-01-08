@@ -1,15 +1,17 @@
 #include <Arduino.h>
 
-#include <LedMatrixController.hpp>
+#include <Logic.hpp>
 
 LedMatrixController matrixController;
 
+Logic logic;
+
 void setup() {
   // put your setup code here, to run once:
-  matrixController.Initialize();
+  logic.Start();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  matrixController.Refresh();
+  logic.Run();
 }
