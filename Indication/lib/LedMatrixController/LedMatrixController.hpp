@@ -10,8 +10,13 @@ enum Overlay
 
 class LedMatrixController{
 private:
+    uint16_t redColor;
+    uint16_t greenColor;
+    uint16_t blackColor;
     Overlay overlay;
-    int8_t minutes;
+    int8_t currMinutes;
+    int8_t prevMinutes;
+    uint8_t loadbar;
 
     void availableOverlay();
     void occupiedOverlay();

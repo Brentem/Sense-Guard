@@ -2,7 +2,7 @@
 
 #include <RGBmatrixPanel.h>
 
-#define CLK  8
+#define CLK  8 // Change this for Arduino Mega
 #define OE   9
 #define LAT 10
 #define A   A0
@@ -18,9 +18,12 @@ const uint8_t M_CHAR = 15;
 const uint8_t I_CHAR = 20;
 const uint8_t N_CHAR = 25;
 
+const uint8_t LOADBAR_X_MARGIN = X_MARGIN + 1;
 const uint8_t LOADBAR_Y_MARGIN = 10;
-const uint8_t LOADBAR_WIDTH = 28;
+const uint8_t LOADBAR_WIDTH = 26;
 const uint8_t LOADBAR_HEIGHT = 4;
+
+const uint8_t LOADBAR_COUNTER_MAX = 24;
 
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, true);
 
@@ -30,7 +33,9 @@ void occupiedOverlay(int minutes);
 LedMatrixController::LedMatrixController()
 {
     overlay = Overlay::AVAILABLE;
-    minutes = 60;
+    currMinutes = 60;
+    prevMinutes = 60;
+    loadbar = LOADBAR_COUNTER_MAX;
 }
 
 void LedMatrixController::Initialize()
@@ -38,11 +43,15 @@ void LedMatrixController::Initialize()
     matrix.begin();
     matrix.setTextWrap(false);
     matrix.setTextSize(1);
+
+    redColor = matrix.Color333(7, 0, 0);
+    greenColor = matrix.Color333(0, 7, 0);
+    blackColor = matrix.Color333(0, 0, 0);
 }
 
 void LedMatrixController::Refresh()
 {
-    matrix.fillScreen(matrix.Color333(0, 0, 0));
+    matrix.fillScreen(blackColor);
 
     switch (overlay)
     {
@@ -55,7 +64,7 @@ void LedMatrixController::Refresh()
         break;
     
     default:
-        matrix.fillScreen(matrix.Color333(0, 0, 0));
+        matrix.fillScreen(blackColor);
         break;
     }
 
@@ -65,31 +74,46 @@ void LedMatrixController::Refresh()
 void LedMatrixController::ChangeOverlay(Overlay overlay)
 {
     this->overlay = overlay;
-    minutes = 60;
+    currMinutes = 60;
 }
 
 void LedMatrixController::SubtractMinutes()
 {
-    minutes--;
+    currMinutes--;
 
-    if(minutes < 0)
+    if(currMinutes < 0)
     {
-        minutes = 60;
+        currMinutes = 60;
+        prevMinutes = 60;
+
+        loadbar = LOADBAR_COUNTER_MAX;
+    }
+
+    if((prevMinutes - currMinutes) == 5)
+    {
+        loadbar = loadbar - 2;
+        prevMinutes = currMinutes;
     }
 }
 
 void LedMatrixController::availableOverlay()
 {
-    matrix.setTextColor(matrix.Color333(0, 7, 0));
+    matrix.setTextColor(greenColor);
     matrix.setCursor(2, 1);
     matrix.print("bruh");
 }
 
 void LedMatrixController::occupiedOverlay()
 {
-    matrix.setTextColor(matrix.Color333(7, 0, 0));
+    matrix.setTextColor(redColor);
     matrix.setCursor(X_MARGIN, Y_MARGIN);
-    matrix.print(minutes, BASE);
+
+    if(currMinutes < 10)
+    {
+        matrix.print(0, BASE);
+    }
+
+    matrix.print(currMinutes, BASE);
     matrix.setCursor(M_CHAR, Y_MARGIN);
     matrix.print('m');
     matrix.setCursor(I_CHAR, Y_MARGIN);
@@ -97,8 +121,6 @@ void LedMatrixController::occupiedOverlay()
     matrix.setCursor(N_CHAR, Y_MARGIN);
     matrix.print('n');
 
-    uint8_t loadbar = 13;
-
-    matrix.drawRect(X_MARGIN, LOADBAR_Y_MARGIN, LOADBAR_WIDTH, LOADBAR_HEIGHT, matrix.Color333(7, 0, 0));
-    matrix.fillRect((X_MARGIN + 1), (LOADBAR_Y_MARGIN + 1), loadbar, (LOADBAR_HEIGHT - 2), matrix.Color333(7, 0, 0));
+    matrix.drawRect(LOADBAR_X_MARGIN, LOADBAR_Y_MARGIN, LOADBAR_WIDTH, LOADBAR_HEIGHT, redColor);
+    matrix.fillRect((LOADBAR_X_MARGIN + 1), (LOADBAR_Y_MARGIN + 1), loadbar, (LOADBAR_HEIGHT - 2), redColor);
 }
