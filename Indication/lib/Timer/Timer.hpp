@@ -11,7 +11,7 @@ private:
     bool finished;
 
 public:
-    Timer(uint32_t interval);
+    explicit Timer(uint32_t interval);
     void Start();
     void Run();
     void Stop();

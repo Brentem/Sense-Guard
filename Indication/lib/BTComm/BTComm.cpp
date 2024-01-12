@@ -54,7 +54,7 @@ bool BTComm::Received()
 
 char* BTComm::GetMessage()
 {
-    char* bufPtr = nullptr;
+    char* bufPtr = NULL;
 
     if(received)
     {
