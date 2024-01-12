@@ -7,7 +7,7 @@
 class Logic
 {
 private:
-    Timer* timer;
+    // Timer* timer;
     LedMatrixController controller;
     BTComm comm;
 
