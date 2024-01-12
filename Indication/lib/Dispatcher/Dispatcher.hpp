@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <Timer.hpp>
 
-#define ELEMENTS_NR 2
+#define ELEMENTS_NR 3
 
 struct DispatchElements
 {

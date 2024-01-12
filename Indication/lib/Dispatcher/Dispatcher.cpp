@@ -27,9 +27,9 @@ bool Dispatcher::AllocSlot(uint32_t interval, void (*functionPtr)(), uint8_t slo
         return false;
     }
 
-    elements->isFree = false;
+    elements[slotId].isFree = false;
     elements[slotId].functionPtr = functionPtr;
-    elements->timer.Start(interval);
+    elements[slotId].timer.Start(interval);
 
     return true;
 }
