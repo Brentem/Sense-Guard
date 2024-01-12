@@ -6,7 +6,7 @@ const char* OCCUPIED_MSG = "Occupied";
 uint8_t counter = 0;
 uint8_t nogEen = 0;
 
-char* msg = NULL;
+// char* msg = NULL;
 
 Logic::Logic()
 {
@@ -26,38 +26,58 @@ void Logic::Start()
 
 void Logic::Run()
 {
-    if(nogEen == 2)
+    // if(nogEen == 2)
+    // {
+    //     comm.Reading();
+    // }
+    // else if(nogEen == 6)
+    // {
+    //     if(comm.Received())
+    //     {
+    //         msg = comm.GetMessage();
+    //     }
+    // }
+    // else if(nogEen == 10)
+    // {
+    //     Serial.print("t");
+
+    // // Dit stuk will helemaal niet werken
+    // //     if(msg != NULL)
+    // //     {
+    // //         // Serial.print("T");
+    // //         if(strcmp(msg, AVAILABLE_MSG) == 0)
+    // //         {
+    // //             controller.ChangeOverlay(Overlay::AVAILABLE);
+    // //         }
+    // //         else if(strcmp(msg, OCCUPIED_MSG) == 0)
+    // //         {
+    // //             controller.ChangeOverlay(Overlay::OCCUPIED);
+    // //         }
+
+    // //         msg = NULL;
+    // //     }
+
+    //     comm.EmptyBuffer();
+    // }
+
+    if(nogEen < 5)  
     {
         comm.Reading();
-    }
-    else if(nogEen == 6)
-    {
-        if(comm.Received())
+
+        char buffer[BUFFER_SIZE] = {0};
+        bool received = comm.GetMessage2(buffer);
+
+        if(received)
         {
-            msg = comm.GetMessage();
+            if(strcmp(buffer, AVAILABLE_MSG) == 0)
+            {
+                controller.ChangeOverlay(Overlay::AVAILABLE);
+            }
+            else if(strcmp(buffer, OCCUPIED_MSG) == 0)
+            {
+                controller.ChangeOverlay(Overlay::OCCUPIED);
+            }
         }
-    }
-    else if(nogEen == 10)
-    {
-        Serial.print("t");
-
-    // Dit stuk will helemaal niet werken
-    //     if(msg != NULL)
-    //     {
-    //         // Serial.print("T");
-    //         if(strcmp(msg, AVAILABLE_MSG) == 0)
-    //         {
-    //             controller.ChangeOverlay(Overlay::AVAILABLE);
-    //         }
-    //         else if(strcmp(msg, OCCUPIED_MSG) == 0)
-    //         {
-    //             controller.ChangeOverlay(Overlay::OCCUPIED);
-    //         }
-
-    //         msg = NULL;
-    //     }
-
-        comm.EmptyBuffer();
     }
 
     if(!timer->Started())
@@ -79,7 +99,7 @@ void Logic::Run()
             counter = 0;
         }
 
-        if(nogEen == 14)
+        if(nogEen == 10)
         {
             nogEen = 0;
             controller.Refresh();

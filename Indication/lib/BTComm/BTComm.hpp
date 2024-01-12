@@ -19,5 +19,6 @@ public:
     void Reading();
     bool Received();
     char* GetMessage();
+    bool GetMessage2(char* buffer);
     void EmptyBuffer();
 };
