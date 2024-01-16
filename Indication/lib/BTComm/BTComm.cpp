@@ -65,26 +65,6 @@ char* BTComm::GetMessage()
     return bufPtr;
 }
 
-bool BTComm::GetMessage2(char* buffer)
-{
-    if(buffer == nullptr)
-        return false;
-
-    bool succes = false;
-
-    if(received)
-    {
-        for(int i = 0; i < BUFFER_SIZE; i++)
-        {
-            buffer[i] = buf[i];
-        }
-
-        succes = true;
-    }
-
-    return succes;
-}
-
 void BTComm::EmptyBuffer()
 {
     for(int i = 0; i < BUFFER_SIZE; i++)

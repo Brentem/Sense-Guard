@@ -37,6 +37,9 @@ LedMatrixController::LedMatrixController()
     currMinutes = 60;
     prevMinutes = 60;
     loadbar = LOADBAR_COUNTER_MAX;
+    redColor = 0;
+    greenColor = 0;
+    blackColor = 0;
 }
 
 void LedMatrixController::Initialize()
