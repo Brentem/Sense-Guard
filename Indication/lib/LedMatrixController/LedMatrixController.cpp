@@ -25,7 +25,8 @@ const uint8_t LOADBAR_HEIGHT = 4;
 
 const uint8_t LOADBAR_COUNTER_MAX = 24;
 
-RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, true);
+RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
+
 
 void availableOverlay(int unused);
 void occupiedOverlay(int minutes);
@@ -36,6 +37,9 @@ LedMatrixController::LedMatrixController()
     currMinutes = 60;
     prevMinutes = 60;
     loadbar = LOADBAR_COUNTER_MAX;
+    redColor = 0;
+    greenColor = 0;
+    blackColor = 0;
 }
 
 void LedMatrixController::Initialize()
@@ -68,7 +72,7 @@ void LedMatrixController::Refresh()
         break;
     }
 
-    matrix.swapBuffers(false);
+    matrix.updateDisplay();
 }
 
 void LedMatrixController::ChangeOverlay(Overlay overlay)
@@ -98,9 +102,7 @@ void LedMatrixController::SubtractMinutes()
 
 void LedMatrixController::availableOverlay()
 {
-    matrix.setTextColor(greenColor);
-    matrix.setCursor(2, 1);
-    matrix.print("bruh");
+    matrix.fillScreen(greenColor);
 }
 
 void LedMatrixController::occupiedOverlay()

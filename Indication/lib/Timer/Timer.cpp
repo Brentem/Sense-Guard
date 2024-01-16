@@ -1,47 +1,27 @@
 #include "Timer.hpp"
 
-Timer::Timer(uint32_t interval)
+Timer::Timer()
 {
     prevMillis = 0;
-    this->interval = interval;
-    started = false;
-    finished = false;
+    interval = 0;
 }
 
-void Timer::Start()
+void Timer::Start(uint32_t interval)
 {
     prevMillis = millis();
-    started = true;
+    this->interval = interval;
 }
 
-void Timer::Run()
+bool Timer::TimerFinished()
 {
-    if(!started)
-        return;
+    bool finished = false;
 
     uint32_t currMillis = millis();
-
-    if((currMillis - prevMillis) >= interval)
+    if(currMillis >= (prevMillis + interval))
     {
         finished = true;
-        started = false;
+        prevMillis = currMillis;
     }
-}
 
-void Timer::Stop()
-{
-    started = false;
-    finished = false;
-}
-
-bool Timer::Started()
-{
-    return started;
-}
-
-bool Timer::Finished()
-{
-    bool temp = finished;
-    finished = false;
-    return temp;
+    return finished;
 }
