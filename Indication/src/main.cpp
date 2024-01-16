@@ -2,18 +2,20 @@
 #include <LedMatrixController.hpp>
 #include <Dispatcher.hpp>
 #include <BTComm.hpp>
+#include <LedStripController.hpp>
 
 Dispatcher dispatcher;
-LedMatrixController controller;
+LedMatrixController matrix;
 BTComm comm;
+LedStripController ledStrip;
 
 const char* AVAILABLE_MSG = "Available";
 const char* OCCUPIED_MSG = "Occupied";
 
 void MinuteCountdown()
 {
-  controller.SubtractMinutes();
-  controller.Refresh();
+  matrix.SubtractMinutes();
+  matrix.Refresh();
 }
 
 void Communication()
@@ -29,11 +31,13 @@ void Communication()
 
   if(strcmp(message, AVAILABLE_MSG) == 0)
   {
-    controller.ChangeOverlay(Overlay::AVAILABLE);
+    matrix.ChangeOverlay(Overlay::AVAILABLE);
+    ledStrip.ChangeState(LedState::GREEN);
   }
   else if(strcmp(message, OCCUPIED_MSG) == 0)
   {
-    controller.ChangeOverlay(Overlay::OCCUPIED);
+    matrix.ChangeOverlay(Overlay::OCCUPIED);
+    ledStrip.ChangeState(LedState::RED);
   }
 }
 
@@ -41,9 +45,13 @@ void setup() {
   // put your setup code here, to run once:
   comm.Begin();
 
-  controller.Initialize();
-  controller.ChangeOverlay(Overlay::OCCUPIED);
-  controller.Refresh();
+  matrix.Initialize();
+  matrix.ChangeOverlay(Overlay::OCCUPIED);
+  matrix.Refresh();
+
+  ledStrip.Initialize();
+  ledStrip.ChangeState(LedState::RED);
+  ledStrip.Refresh();
 
   dispatcher.AllocSlot(1000, MinuteCountdown, 0);
 }
