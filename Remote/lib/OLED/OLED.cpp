@@ -73,3 +73,11 @@ void OLED::Duration()
 
     display.display();
 }
+
+void OLED::Clear()
+{
+    display.clearDisplay();
+    display.setFont();
+    display.setCursor(0, 0);
+    display.display();
+}

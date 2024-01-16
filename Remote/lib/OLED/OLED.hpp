@@ -22,4 +22,5 @@ public:
     void StartSession();
     void Countdown();
     void Duration();
+    void Clear();
 };
