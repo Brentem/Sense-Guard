@@ -12,7 +12,7 @@ LedStripController::LedStripController()
 
 void LedStripController::Initialize()
 {
-    FastLED.addLeds<WS2812B, DATA_PIN>(leds, NUM_LEDS);
+    FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
 }
 
 void LedStripController::Refresh()

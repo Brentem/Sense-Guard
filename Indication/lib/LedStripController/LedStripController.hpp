@@ -2,7 +2,7 @@
 
 #include <FastLED.h>
 
-#define NUM_LEDS 30
+#define NUM_LEDS 5 // Final result should be 30
 #define DATA_PIN 11
 
 enum LedState
