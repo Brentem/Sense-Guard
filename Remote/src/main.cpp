@@ -12,13 +12,28 @@ int currBtnState = LOW;
 
 int counter = 0;
 
+bool off = false;
+
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(9600);
   pinMode(buttonPin, INPUT);
   pinMode(switchPin, INPUT);
 
   oled.Initialize();
   oled.StartSession();
+}
+
+void Communicate()
+{
+  if(counter == 1)
+  {
+    Serial.print("!Occupied&");
+  }
+  else
+  {
+    Serial.print("!Available&");
+  }
 }
 
 void loop() {
@@ -28,7 +43,19 @@ void loop() {
   {
     oled.Clear();
     counter = 0;
+
+    if(!off)
+    {
+      off = true;
+      Serial.print("!Off&");
+    }
     return;
+  }
+
+  if(off)
+  {
+    off = false;
+    Serial.print("!On&");
   }
 
   prevBtnState = currBtnState;
@@ -37,6 +64,7 @@ void loop() {
   if((currBtnState == LOW) && (prevBtnState == HIGH))
   {
     counter++;
+    Communicate();
   }
 
   if(counter > 2)

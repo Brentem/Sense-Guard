@@ -24,6 +24,7 @@ const uint8_t LOADBAR_WIDTH = 26;
 const uint8_t LOADBAR_HEIGHT = 4;
 
 const uint8_t LOADBAR_COUNTER_MAX = 24;
+const uint8_t MINUTE_COUNTER_MAX = 60;
 
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 
@@ -34,8 +35,8 @@ void occupiedOverlay(int minutes);
 LedMatrixController::LedMatrixController()
 {
     overlay = Overlay::AVAILABLE;
-    currMinutes = 60;
-    prevMinutes = 60;
+    currMinutes = MINUTE_COUNTER_MAX;
+    prevMinutes = MINUTE_COUNTER_MAX;
     loadbar = LOADBAR_COUNTER_MAX;
     redColor = 0;
     greenColor = 0;
@@ -78,7 +79,9 @@ void LedMatrixController::Refresh()
 void LedMatrixController::ChangeOverlay(Overlay overlay)
 {
     this->overlay = overlay;
-    currMinutes = 60;
+    currMinutes = MINUTE_COUNTER_MAX;
+    prevMinutes = MINUTE_COUNTER_MAX;
+    loadbar = LOADBAR_COUNTER_MAX;
 }
 
 void LedMatrixController::SubtractMinutes()
@@ -87,8 +90,8 @@ void LedMatrixController::SubtractMinutes()
 
     if(currMinutes < 0)
     {
-        currMinutes = 60;
-        prevMinutes = 60;
+        currMinutes = MINUTE_COUNTER_MAX;
+        prevMinutes = MINUTE_COUNTER_MAX;
 
         loadbar = LOADBAR_COUNTER_MAX;
     }
@@ -97,6 +100,18 @@ void LedMatrixController::SubtractMinutes()
     {
         loadbar = loadbar - 2;
         prevMinutes = currMinutes;
+    }
+}
+
+void LedMatrixController::TurnOn(bool on)
+{
+    if(on)
+    {
+        overlay = Overlay::AVAILABLE;
+    }
+    else
+    {
+        overlay = Overlay::OVERLAY_OFF;
     }
 }
 

@@ -18,16 +18,17 @@ namespace DebugBluetooth
         public Form1()
         {
             InitializeComponent();
-            port = new SerialPort("COM10", 9600);
+            port = new SerialPort("COM11", 9600);
+            port.Open();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                port.Open();
+                //port.Open();
                 port.Write("!Available&");
-                port.Close();
+                //port.Close();
             }
             catch (Exception ex)
             {
@@ -39,9 +40,9 @@ namespace DebugBluetooth
         {
             try
             {
-                port.Open();
+                //port.Open();
                 port.Write("!Occupied&");
-                port.Close();
+                //port.Close();
             }
             catch (Exception ex)
             {

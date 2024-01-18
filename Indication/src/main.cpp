@@ -11,6 +11,10 @@ LedStripController ledStrip;
 
 const char* AVAILABLE_MSG = "Available";
 const char* OCCUPIED_MSG = "Occupied";
+const char* ON_MSG = "On";
+const char* OFF_MSG = "Off";
+
+bool messageReceived = false;
 
 void MinuteCountdown()
 {
@@ -30,6 +34,8 @@ void Communication()
     return;
   }
 
+  messageReceived = true;
+
   if(strcmp(message, AVAILABLE_MSG) == 0)
   {
     ledMatrix.ChangeOverlay(Overlay::AVAILABLE);
@@ -39,6 +45,16 @@ void Communication()
   {
     ledMatrix.ChangeOverlay(Overlay::OCCUPIED);
     ledStrip.ChangeState(LedState::RED);
+  }
+  else if(strcmp(message, ON_MSG) == 0)
+  {
+    ledMatrix.TurnOn(true);
+    // led strip turnon
+  }
+  else if(strcmp(message, OFF_MSG) == 0)
+  {
+    ledMatrix.TurnOn(false);
+    // led strip turnoff
   }
 }
 
@@ -60,5 +76,15 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   dispatcher.DoDispatch();
-  Communication();
+
+  if(messageReceived)
+  {
+    ledMatrix.Refresh();
+    ledStrip.Refresh();
+    messageReceived = false;
+  }
+  else
+  {
+    Communication();
+  }
 }
