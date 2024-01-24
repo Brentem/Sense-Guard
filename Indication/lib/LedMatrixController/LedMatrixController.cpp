@@ -86,14 +86,19 @@ void LedMatrixController::ChangeOverlay(Overlay overlay)
 
 void LedMatrixController::SubtractMinutes()
 {
-    currMinutes--;
+    // currMinutes--;
 
-    if(currMinutes < 0)
+    // if(currMinutes < 0)
+    // {
+    //     currMinutes = MINUTE_COUNTER_MAX;
+    //     prevMinutes = MINUTE_COUNTER_MAX;
+
+    //     loadbar = LOADBAR_COUNTER_MAX;
+    // }
+
+    if(currMinutes != 0)
     {
-        currMinutes = MINUTE_COUNTER_MAX;
-        prevMinutes = MINUTE_COUNTER_MAX;
-
-        loadbar = LOADBAR_COUNTER_MAX;
+        currMinutes--;
     }
 
     if((prevMinutes - currMinutes) == 5)
@@ -117,7 +122,11 @@ void LedMatrixController::TurnOn(bool on)
 
 void LedMatrixController::availableOverlay()
 {
-    matrix.fillScreen(greenColor);
+    // matrix.fillScreen(greenColor);
+    matrix.setTextColor(greenColor);
+    matrix.setCursor(X_MARGIN + 3, Y_MARGIN + 3);
+
+    matrix.print("Vrij");
 }
 
 void LedMatrixController::occupiedOverlay()

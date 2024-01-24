@@ -49,12 +49,12 @@ void Communication()
   else if(strcmp(message, ON_MSG) == 0)
   {
     ledMatrix.TurnOn(true);
-    // led strip turnon
+    ledStrip.TurnOn(true);
   }
   else if(strcmp(message, OFF_MSG) == 0)
   {
     ledMatrix.TurnOn(false);
-    // led strip turnoff
+    ledStrip.TurnOn(false);
   }
 }
 
@@ -63,20 +63,20 @@ void setup() {
   comm.Begin();
 
   ledMatrix.Initialize();
-  ledMatrix.ChangeOverlay(Overlay::OCCUPIED);
+  ledMatrix.ChangeOverlay(Overlay::AVAILABLE);
   ledMatrix.Refresh();
 
   ledStrip.Initialize();
-  ledStrip.ChangeState(LedState::RED);
+  ledStrip.ChangeState(LedState::GREEN);
   ledStrip.Refresh();
 
-  dispatcher.AllocSlot(1000, MinuteCountdown, 0);
+  dispatcher.AllocSlot(60000, MinuteCountdown, 0);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   dispatcher.DoDispatch();
-
+  
   if(messageReceived)
   {
     ledMatrix.Refresh();

@@ -37,26 +37,26 @@ void Communicate()
 }
 
 void loop() {
-  int switchState = digitalRead(switchPin);
+  // int switchState = digitalRead(switchPin);
 
-  if(switchState == LOW)
-  {
-    oled.Clear();
-    counter = 0;
+  // if(switchState == LOW)
+  // {
+  //   oled.Clear();
+  //   counter = 0;
 
-    if(!off)
-    {
-      off = true;
-      Serial.print("!Off&");
-    }
-    return;
-  }
+  //   if(!off)
+  //   {
+  //     off = true;
+  //     Serial.print("!Off&");
+  //   }
+  //   return;
+  // }
 
-  if(off)
-  {
-    off = false;
-    Serial.print("!On&");
-  }
+  // if(off)
+  // {
+  //   off = false;
+  //   Serial.print("!On&");
+  // }
 
   prevBtnState = currBtnState;
   currBtnState = digitalRead(buttonPin);
