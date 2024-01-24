@@ -5,10 +5,13 @@
 #define OLED_RESET 0  // GPIO0
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+const int MAX_MINUTES = 60;
+const int MAX_SECONDS = 60;
+
 OLED::OLED()
 {
-    minutes = 59;
-    seconds = 59;
+    minutes = 0;
+    seconds = 0;
 }
 
 void OLED::Initialize()
@@ -50,9 +53,34 @@ void OLED::Countdown()
 
     display.setFont(&FreeSansBold24pt7b);
     display.setCursor(5,50);
-    display.print(minutes);
+
+    uint8_t displayMinutes = 0;
+    uint8_t displaySeconds = (MAX_SECONDS - 1) - seconds;
+
+    if(minutes == MAX_MINUTES)
+    {
+        displayMinutes = 0;
+        displaySeconds = 0;
+    }
+    else
+    {
+        displayMinutes = (MAX_MINUTES - 1) - minutes;
+    }
+
+    if(displayMinutes < 10)
+    {
+        display.print("0");
+    }
+
+    display.print(displayMinutes);
     display.print(':');
-    display.print(seconds);
+
+    if(displaySeconds < 10)
+    {
+        display.print("0");
+    }
+
+    display.print(displaySeconds);
 
     display.display();
 }
@@ -67,8 +95,20 @@ void OLED::Duration()
 
     display.setFont(&FreeSans12pt7b);
     display.setCursor(35,45);
+
+    if(minutes < 10)
+    {
+        display.print("0");
+    }
+
     display.print(minutes);
     display.print(':');
+
+    if(seconds < 10)
+    {
+        display.print("0");
+    }
+    
     display.print(seconds);
 
     display.display();
@@ -80,4 +120,27 @@ void OLED::Clear()
     display.setFont();
     display.setCursor(0, 0);
     display.display();
+}
+
+void OLED::AddSecond()
+{
+    seconds++;
+
+    if(seconds == MAX_SECONDS)
+    {
+        seconds = 0;
+        minutes++;
+    }
+
+    if(minutes == MAX_MINUTES)
+    {
+        minutes = MAX_MINUTES;
+        seconds = 0;
+    }
+}
+
+void OLED::ClearSeconds()
+{
+    seconds = 0;
+    minutes = 0;
 }

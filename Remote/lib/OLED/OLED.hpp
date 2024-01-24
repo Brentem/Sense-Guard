@@ -23,4 +23,6 @@ public:
     void Countdown();
     void Duration();
     void Clear();
+    void AddSecond();
+    void ClearSeconds();
 };

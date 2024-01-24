@@ -1,8 +1,10 @@
 #include <Arduino.h>
 
 #include <OLED.hpp>
+#include <Timer.hpp>
 
 OLED oled;
+Timer timer;
 
 int buttonPin = 4;
 int switchPin = 6;
@@ -12,6 +14,8 @@ int currBtnState = LOW;
 
 int counter = 0;
 
+int prevSwitchState = LOW;
+int currSwitchState = LOW;
 bool off = false;
 
 void setup() {
@@ -22,10 +26,14 @@ void setup() {
 
   oled.Initialize();
   oled.StartSession();
+  timer.Start(1000);
 }
 
 void Communicate()
 {
+  if(off)
+    return;
+
   if(counter == 1)
   {
     Serial.print("!Occupied&");
@@ -37,20 +45,26 @@ void Communicate()
 }
 
 void loop() {
-  // int switchState = digitalRead(switchPin);
+  prevSwitchState = currSwitchState;
+  currSwitchState = digitalRead(switchPin);
 
-  // if(switchState == LOW)
-  // {
-  //   oled.Clear();
-  //   counter = 0;
+  if((currSwitchState == LOW) && (prevSwitchState == HIGH))
+  {
+    oled.Clear();
+    oled.ClearSeconds();
+    counter = 0;
 
-  //   if(!off)
-  //   {
-  //     off = true;
-  //     Serial.print("!Off&");
-  //   }
-  //   return;
-  // }
+    if(!off)
+    {
+      off = true;
+      Serial.print("!Off&");
+    }
+    else
+    {
+      off = false;
+      Serial.print("!On&");
+    }
+  }
 
   // if(off)
   // {
@@ -65,11 +79,27 @@ void loop() {
   {
     counter++;
     Communicate();
+
+    if(counter == 1)
+    {
+      oled.ClearSeconds();
+      timer.Start(1000);
+    }
   }
 
   if(counter > 2)
   {
     counter = 0;
+  }
+
+  if(off)
+  {
+    counter = 3;
+  }
+
+  if((timer.TimerFinished()) && (counter == 1))
+  {
+    oled.AddSecond();
   }
 
   switch (counter)
