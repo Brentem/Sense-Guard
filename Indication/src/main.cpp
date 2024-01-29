@@ -4,17 +4,21 @@
 #include <BTComm.hpp>
 #include <LedStripController.hpp>
 
-Dispatcher dispatcher;
+// Dispatcher dispatcher;
 LedMatrixController ledMatrix;
 BTComm comm;
 LedStripController ledStrip;
+Timer timer;
 
 const char* AVAILABLE_MSG = "Available";
 const char* OCCUPIED_MSG = "Occupied";
 const char* ON_MSG = "On";
 const char* OFF_MSG = "Off";
 
+const uint32_t minuteInMillis = 60000;
+
 bool messageReceived = false;
+bool resetTimer = false;
 
 void MinuteCountdown()
 {
@@ -70,21 +74,34 @@ void setup() {
   ledStrip.ChangeState(LedState::GREEN);
   ledStrip.Refresh();
 
-  dispatcher.AllocSlot(60000, MinuteCountdown, 0);
+  // dispatcher.AllocSlot(60000, MinuteCountdown, 0);
+  timer.Start(minuteInMillis);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  dispatcher.DoDispatch();
+  // dispatcher.DoDispatch();
+
+  if(resetTimer)
+  {
+    resetTimer = false;
+    timer.Start(minuteInMillis);
+  }
   
   if(messageReceived)
   {
     ledMatrix.Refresh();
     ledStrip.Refresh();
     messageReceived = false;
+    resetTimer = true;
   }
   else
   {
     Communication();
+  }
+
+  if((!resetTimer) && timer.TimerFinished())
+  {
+    MinuteCountdown();
   }
 }
