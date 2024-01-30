@@ -2,7 +2,7 @@
 
 #include <FastLED.h>
 
-#define NUM_LEDS 45 // Final result should be 30
+#define NUM_LEDS 45
 #define DATA_PIN_1 11
 #define DATA_PIN_2 12
 
