@@ -66,12 +66,6 @@ void loop() {
     }
   }
 
-  // if(off)
-  // {
-  //   off = false;
-  //   Serial.print("!On&");
-  // }
-
   prevBtnState = currBtnState;
   currBtnState = digitalRead(buttonPin);
 

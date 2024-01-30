@@ -4,7 +4,6 @@
 #include <BTComm.hpp>
 #include <LedStripController.hpp>
 
-// Dispatcher dispatcher;
 LedMatrixController ledMatrix;
 BTComm comm;
 LedStripController ledStrip;
@@ -74,14 +73,11 @@ void setup() {
   ledStrip.ChangeState(LedState::GREEN);
   ledStrip.Refresh();
 
-  // dispatcher.AllocSlot(60000, MinuteCountdown, 0);
   timer.Start(minuteInMillis);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  // dispatcher.DoDispatch();
-
   if(resetTimer)
   {
     resetTimer = false;
