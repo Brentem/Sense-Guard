@@ -1,21 +1,22 @@
 # Sense-Guard
-**Think about timer rollover!!!**
+De Sense-Guard is een product dat we gemaakt hebben om aan te tonen dat een kamer bezet of beschikbaar is.
+We laten dit zien via een led matrix en led strips die rood kleuren als de kamer bezet is en groen als die beschikbaar is.
+Je kan een kamer op bezet of beschikbaar zetten via de afstandbediening.
 
-## MoSCoW
+## Uitleg Folderstructuur
+* Indication: Bevat code voor kastje dat beschikbaarheid van een kamer aangeeft.
+* Remote: Bevat code voor de afstandbediening voor de Indication.
+* DebugBluetooth: WinForms applicatie om bluetooth communicatie te testen voor Indication.
 
-### Indication
+## Benodigheden
+* Visual Studio Code met PlatformIO extensie.
+* Visual Studio --> DebugBluetooth
+* Indication --> Arduino Uno
+* Remote --> Arduino Nano
 
-#### Must
-* [x] Matrix: Occupied Overlay
-* [ ] Matrix: Available Overlay
-* [ ] Led Strip Support
-* [x] Bluetooth Communication
-
-#### Should
-* [ ] Bluetooth Communication Redundancy
-
-#### Could
-* [ ] Logging
-
-#### Won't
-* [ ] Integration Reservation System (too complex for our scope)
+## Todo
+* Bluetooth Communication Redundancy
+  * Wat gebeurt er als de bluetooth verbinding wegvalt?
+  * Wat gebeurt er als niet het hele bericht aankomt?
+* [millis()](https://www.arduino.cc/reference/en/language/functions/time/millis/) rollover, na 50 dagen wordt de waarde gereset wat gebeurd er dan?
+* Voor de Indication waarschijnlijk een snellere microcontroller gebruiken dan de Arduino Uno.

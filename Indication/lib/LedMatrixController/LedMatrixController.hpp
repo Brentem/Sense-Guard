@@ -5,7 +5,8 @@
 enum Overlay
 {
     AVAILABLE,
-    OCCUPIED
+    OCCUPIED,
+    OVERLAY_OFF
 };
 
 class LedMatrixController{
@@ -27,4 +28,5 @@ public:
     void Refresh();
     void ChangeOverlay(Overlay overlay);
     void SubtractMinutes();
+    void TurnOn(bool on);
 };
